@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -37,6 +39,20 @@ dependencies:
   cupertino_icons: ^1.0.6
   smooth_page_indicator: ^1.1.0
   flutter_svg: ^2.0.10+1
+  flutter_verification_code: ^1.1.7
+  carousel_slider: ^4.2.1
+  dots_indicator: ^3.0.0
+  passwordfield: ^0.2.0
+  http: ^1.2.1
+  flutter_inappwebview: ^6.0.0
+  youtube_player_flutter: ^9.0.1
+  shared_preferences: ^2.2.3
+  cached_network_image: ^3.3.1
+  webview_flutter: ^4.8.0
+  webview_flutter_android: ^3.16.3
+  
+  
+
 
 dev_dependencies:
   flutter_test:
