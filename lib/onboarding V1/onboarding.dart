@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie_app/h%20(2).dart';
+import 'package:movie_app/login/sign-up_page.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_1.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_2.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_3.dart';
@@ -69,8 +70,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> with ScreenSizeUtil {
                   SizedBox(
                     width: getWidth(context) * 0.55,
                   ),
-                  SvgPicture.asset(
-                    'assets/icons/Next.svg',
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpLogin(),
+                        ),
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/Next.svg',
+                    ),
                   ),
                 ],
               ),
