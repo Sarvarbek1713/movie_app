@@ -1,0 +1,2 @@
+GET https://kino-1.onrender.com/get
+Content-Type: application/json

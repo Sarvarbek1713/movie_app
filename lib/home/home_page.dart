@@ -8,7 +8,7 @@ import 'package:movie_app/home/wishlist.dart';
 import 'package:movie_app/movie_interface.dart/movie_page.dart';
 import 'package:movie_app/profile/profile.dart';
 import 'package:movie_app/search/search_page.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -230,26 +230,7 @@ class PopularWidget extends StatelessWidget with ScreenSizeUtil {
 
   @override
   Widget build(BuildContext context) {
-    WebViewController controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://kinoman.uz/movie/26052')) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse('https://flutter.dev'));
+    
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: getHeight(context) * 0.025),
@@ -302,7 +283,7 @@ class PopularWidget extends StatelessWidget with ScreenSizeUtil {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    WebViewWidget(controller: controller)),
+                                  MoviePage()),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -462,7 +443,7 @@ class PageViewImage extends StatefulWidget {
 class _PageViewImageState extends State<PageViewImage> with ScreenSizeUtil {
   int _currentImageIndex = 0;
   final List _images = [
-    'assets/images/orgimchak.png', //https://youtu.be/dDF0afG6Vvk?si=zkYRhfELOwktb26B /Человек паук Лотос 2023
+    'assets/images/orgimchak.png', //https://www.youtube.com/watch?v=dDF0afG6Vvk /Человек паук Лотос 2023
     'assets/images/moviy_q.jpg', //https://youtu.be/1x6nMFHTKDg?si=dsRU3pP5Ru6pOVsI Moviy qo'ng'iz
     'assets/images/viking.jpg', //https://youtu.be/nBVq39TMzXY?si=6mK0nUV_kXsbMjFp Викинги 2024
     'assets/images/zateryanniy.jpg', //https://youtu.be/mJ4zEX0M1o4?si=HaIbrzw_5nHR_jDG Затерянный мир
@@ -509,24 +490,17 @@ class _PageViewImageState extends State<PageViewImage> with ScreenSizeUtil {
                             fontWeight: FontWeight.w600,
                             color: Colors.white),
                       ),
-                      // const Text(
-                      //   'On March 2, 2022 ',
-                      //   style: TextStyle(
-                      //     fontSize: 12,
-                      //     color: Color(0xffEBEBEF),
-                      //     fontWeight: FontWeight.w500,
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
                 InkWell(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MoviePage(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MoviePage(),
+                      ),
+                    );
                   },
                 ),
               ],

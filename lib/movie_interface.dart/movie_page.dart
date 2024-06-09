@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/h%20(2).dart';
-import 'package:movie_app/movie_interface.dart/player.dart';
-import 'package:movie_app/web_view.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MoviePage extends StatefulWidget {
   // final  String assetName;
@@ -89,7 +88,7 @@ class _MoviePageState extends State<MoviePage> with ScreenSizeUtil {
                         const Text(
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          'Spider-Man No Way waitng',
+                          'Spider-Man Lotus',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -153,7 +152,7 @@ class _MoviePageState extends State<MoviePage> with ScreenSizeUtil {
                   ),
                 ),
                 Text(
-                  'For the first time in the cinematic history of Spider-Man, our friendly neighborhood hero\'s identity is revealed, bringing his Super Hero responsibilities into conflict with his normal life and putting those he cares about most at risk. More',
+                  'Впервые в истории фильмов о Человеке-пауке раскрывается личность нашего дружелюбного соседского героя, что приводит к противоречию его обязанностей супергероя с его обычной жизнью и подвергает опасности тех, кто ему дорог больше всего.',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -207,13 +206,35 @@ class RateWidget extends StatelessWidget with ScreenSizeUtil {
   }
 }
 
-class PlaybButton extends StatelessWidget {
+class PlaybButton extends StatefulWidget {
   const PlaybButton({
     super.key,
   });
 
   @override
+  State<PlaybButton> createState() => _PlaybButtonState();
+}
+
+class _PlaybButtonState extends State<PlaybButton> {
+    late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = YoutubePlayerController(
+      initialVideoId:
+          'dDF0afG6Vvk', // Идентификатор видео (часть URL после 'youtube.com/watch?v=')
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: Row(
@@ -229,7 +250,7 @@ class PlaybButton extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const WebViewExample(),
+                  builder: (context) => YoutubePlayer(controller: _controller),
                 ),
               );
             },

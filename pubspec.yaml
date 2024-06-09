@@ -44,12 +44,10 @@ dependencies:
   dots_indicator: ^3.0.0
   passwordfield: ^0.2.0
   http: ^1.2.1
-  flutter_inappwebview: ^6.0.0
+  
   youtube_player_flutter: ^9.0.1
   shared_preferences: ^2.2.3
   cached_network_image: ^3.3.1
-  webview_flutter: ^4.8.0
-  webview_flutter_android: ^3.16.3
   
   
 

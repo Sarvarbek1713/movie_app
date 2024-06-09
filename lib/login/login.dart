@@ -163,7 +163,7 @@ Future<void> login(String email, String password, BuildContext context) async {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Ошибка'),
-        content: Text('Ошибка при попытке входа: $e'),
+        content: Text('E-mail или пароль неправильный: $e'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -176,3 +176,4 @@ Future<void> login(String email, String password, BuildContext context) async {
     );
   }
 }
+    

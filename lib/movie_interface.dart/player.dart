@@ -15,10 +15,10 @@ class _PlayerState extends State<Player> {
   @override
   void initState() {
     super.initState();
-    // Установка контроллера с идентификатором видео
+
     _controller = YoutubePlayerController(
       initialVideoId:
-          'VEgsXt2jj91TO9zi', // Идентификатор видео (часть URL после 'youtube.com/watch?v=')
+          'dDF0afG6Vvk', // Идентификатор видео (часть URL после 'youtube.com/watch?v=')
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,

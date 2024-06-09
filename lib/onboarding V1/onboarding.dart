@@ -8,7 +8,6 @@ import 'package:movie_app/onboarding%20V1/onboarding_1.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_2.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_3.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});

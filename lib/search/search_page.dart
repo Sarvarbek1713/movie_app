@@ -138,6 +138,7 @@ class MovieCard extends StatelessWidget with ScreenSizeUtil {
                       EdgeInsets.symmetric(vertical: getHeight(context) * 0.01),
                   child: Text(
                     title,
+                    maxLines: 1,
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -225,19 +226,6 @@ class MovieCard extends StatelessWidget with ScreenSizeUtil {
                           fontWeight: FontWeight.w600),
                     ),
                   ],
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Wishlist(),
-                      ),
-                    );
-                  },
-                  icon: SvgPicture.asset(
-                    'assets/icons/like.svg',
-                  ),
                 ),
               ],
             ),
