@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/h%20(2).dart';
 import 'package:movie_app/login/log_in.dart';
@@ -72,7 +70,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> with ScreenSizeUtil {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>   SignUpLogin(),
+                          builder: (context) => SignUpLogin(),
                         ),
                       );
                     },

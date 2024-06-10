@@ -6,7 +6,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class MoviePage extends StatefulWidget {
   // final  String assetName;
   const MoviePage({
-    super.key,
+    super.key, required String name, required String year, required String time, required String video, required String image, required String description,
   });
 
   @override

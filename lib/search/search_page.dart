@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movie_app/search/model.dart';
+import 'package:movie_app/search/movie_card.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:movie_app/h%20(2).dart';
-import 'package:movie_app/home/home_page.dart';
-import 'package:movie_app/movie_interface.dart/movie_page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+Future<MovieModel> fetchMovies() async {
+  final response = await http.get(Uri.parse('https://kino-1.onrender.com/get'));
+  if (response.statusCode == 200) {
+    return MovieModel.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load movies');
+  }
+}
 
 class SearchPage extends StatefulWidget with ScreenSizeUtil {
   const SearchPage({super.key});
@@ -13,18 +25,26 @@ class SearchPage extends StatefulWidget with ScreenSizeUtil {
 
 class _SearchPageState extends State<SearchPage> with ScreenSizeUtil {
   final TextEditingController _searchController = TextEditingController();
-  final List<Map<String, String>> _movies = [
-    {'title': 'Spider-Man No Way Home', 'date': '2021', 'time': '148 minutes'},
-    {'title': 'The Batman', 'date': '2022', 'time': '176 minutes'},
-    {'title': 'Doctor Strange', 'date': '2016', 'time': '115 minutes'},
-    {'title': 'Thor: Love and Thunder', 'date': '2022', 'time': '119 minutes'},
-  ];
-  List<Map<String, String>> _filteredMovies = [];
+  List<Data> _movies = [];
+  List<Data> _filteredMovies = [];
+  bool _isLoading = true;
+  bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
-    _filteredMovies = _movies;
+    fetchMovies().then((movies) {
+      setState(() {
+        _movies = movies.data ?? [];
+        _filteredMovies = movies.data ?? [];
+        _isLoading = false;
+      });
+    }).catchError((error) {
+      setState(() {
+        _hasError = true;
+        _isLoading = false;
+      });
+    });
     _searchController.addListener(_filterMovies);
   }
 
@@ -32,7 +52,7 @@ class _SearchPageState extends State<SearchPage> with ScreenSizeUtil {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredMovies = _movies
-          .where((movie) => movie['title']!.toLowerCase().contains(query))
+          .where((movie) => movie.name!.toLowerCase().contains(query))
           .toList();
     });
   }
@@ -48,194 +68,161 @@ class _SearchPageState extends State<SearchPage> with ScreenSizeUtil {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff1F1D2B),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                      horizontal: 24, vertical: getHeight(context) * 0.05)
-                  .copyWith(bottom: getHeight(context) * 0.03),
-              child: SearchiBar(controller: _searchController),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: getHeight(context) * 0.03)
-                      .copyWith(top: 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _filteredMovies
-                    .map((movie) => MovieCard(
-                          title: movie['title']!,
-                          date: movie['date']!,
-                          time: movie['time']!,
-                        ))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _hasError
+              ? const Center(
+                  child: Text('Failed to load movies',
+                      style: TextStyle(color: Colors.white)))
+              : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: getHeight(context) * 0.05)
+                            .copyWith(bottom: getHeight(context) * 0.03),
+                        child: SearchiBar(controller: _searchController),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                                horizontal: getHeight(context) * 0.03)
+                            .copyWith(top: 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: _filteredMovies
+                              .map((movie) => MovieCard(
+                                    name: movie.name ?? '',
+                                    year: movie.year ?? '',
+                                    time: movie.time ?? '',
+                                    video: movie.movieVideo ?? '',
+                                    image: movie.movieImage ?? '',
+                                    description: movie.description ?? '',
+                                    popularity: movie.popularity ?? '',
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 }
 
-class MovieCard extends StatelessWidget with ScreenSizeUtil {
-  final String title;
-  final String date;
+class MovieDetailPage extends StatelessWidget {
+  final String name;
+  final String year;
   final String time;
+  final String video;
+  final String image;
+  final String description;
+  final String popularity;
 
-  const MovieCard({
+  const MovieDetailPage({
     super.key,
-    required this.title,
-    required this.date,
+    required this.name,
+    required this.year,
     required this.time,
+    required this.video,
+    required this.image,
+    required this.description,
+    required this.popularity,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MoviePage(),
-            ),
-          );
-        },
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+    final YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(video)!,
+      flags: const YoutubePlayerFlags(
+        disableDragSeek: true,
+        loop: true,
+        captionLanguage: 'ru',
+        autoPlay: false,
+        forceHD: true,
+        controlsVisibleAtStart: true,
+        showLiveFullscreenButton: true,
+        mute: false,
+      ),
+    );
+
+    return Scaffold(
+      backgroundColor: const Color(0xff1F1D2B),
+      appBar: AppBar(
+        backgroundColor: const Color(0xff1F1D2B),
+        centerTitle: true,
+        title: Text(
+          name,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              YoutubePlayer(
+                controller: controller,
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: Colors.red,
               ),
-              child: Image.asset(
-                'assets/images/spdrmn.png',
-                width: getHeight(context) * 0.18,
+              const SizedBox(height: 16),
+              // Image.asset(
+              //   image,
+              //   width: MediaQuery.of(context).size.width,
+              // ),
+              const SizedBox(height: 16),
+              Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 16),
+              Row(
                 children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffFF8700),
-                    ),
-                    child: const Text(
-                      'Premium',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                  const Icon(
+                    Icons.calendar_month,
+                    size: 14,
+                    color: Colors.grey,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: getHeight(context) * 0.01),
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  const SizedBox(width: 8),
+                  Text(
+                    year,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.calendar_month,
-                        size: 14,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        date,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: getHeight(context) * 0.01),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.timelapse,
-                          size: 18,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          time,
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Row(
-                    children: [
-                      Icon(
-                        Icons.local_movies,
-                        size: 18,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Action | ',
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        'Фильм',
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.timelapse,
+                    size: 18,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    time,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -264,9 +251,7 @@ class SearchiBar extends StatelessWidget {
             size: 18,
             color: Colors.grey,
           ),
-          const SizedBox(
-            width: 8,
-          ),
+          const SizedBox(width: 8),
           Expanded(
             child: TextField(
               controller: controller,
@@ -301,39 +286,6 @@ class SearchiBar extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CategorySearchWidget extends StatelessWidget with ScreenSizeUtil {
-  const CategorySearchWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: getWidth(context) * 0.05,
-          ),
-          scrollDirection: Axis.horizontal,
-          child: const Row(
-            children: [
-              ColorChangingButtonsRow(
-                buttonLabels: [
-                  'All',
-                  'Comedy',
-                  'Animation',
-                  'Document 1',
-                  'Document 2',
-                  'Document 3'
-                ],
-              )
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

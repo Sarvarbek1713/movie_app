@@ -45,6 +45,7 @@ dependencies:
   passwordfield: ^0.2.0
   http: ^1.2.1
   
+  
   youtube_player_flutter: ^9.0.1
   shared_preferences: ^2.2.3
   cached_network_image: ^3.3.1
