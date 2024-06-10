@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/h%20(2).dart';
 import 'package:movie_app/search/model.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_app/search/search_page.dart';
 
 Future<MovieModel> fetchMovies() async {
   final response = await http.get(Uri.parse('https://kino-1.onrender.com/get'));
@@ -41,7 +42,7 @@ class _CategoryWidgetState extends State<CategoryWidget> with ScreenSizeUtil {
       case 2: // 'Боевик'
         return allMovies.where((movie) => movie.year == '2023').toList();
       case 3: // 'Фантастика'
-        return allMovies.where((movie) => movie.year == '2022  ').toList();
+        return allMovies.where((movie) => movie.year == '2022').toList();
       default:
         return [];
     }
@@ -56,8 +57,48 @@ class _CategoryWidgetState extends State<CategoryWidget> with ScreenSizeUtil {
           time: '',
           name: 'Movie 1',
           movieImage:
+              'https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=600',
+          year: '2024'),
+      Data(
+          description: '',
+          movieVideo: '',
+          time: '',
+          name: 'Movie 1',
+          movieImage:
+              'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          year: '2023'),
+      Data(
+          description: '',
+          movieVideo: '',
+          time: '',
+          name: 'Movie 1',
+          movieImage:
               'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           year: '2024'),
+      Data(
+          description: '',
+          movieVideo: '',
+          time: '',
+          name: 'Movie 1',
+          movieImage:
+              'https://images.pexels.com/photos/1547813/pexels-photo-1547813.jpeg?auto=compress&cs=tinysrgb&w=600',
+          year: '2022'),
+      Data(
+          description: '',
+          movieVideo: '',
+          time: '',
+          name: 'Movie 1',
+          movieImage:
+              'https://images.pexels.com/photos/2086622/pexels-photo-2086622.jpeg?auto=compress&cs=tinysrgb&w=600',
+          year: '2023'),
+      Data(
+          description: '',
+          movieVideo: '',
+          time: '',
+          name: 'Movie 1',
+          movieImage:
+              'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          year: '2022'),
 
       // Add more movies as needed
     ];
@@ -99,6 +140,13 @@ class _CategoryWidgetState extends State<CategoryWidget> with ScreenSizeUtil {
         ),
         if (_showPopularWidget)
           PopularWidget(
+            descrip: '',
+            movieVideo: '',
+            popularity: '',
+            time: '',
+            year: '',
+            movieImage: '',
+            name: '',
             movies: getMoviesForSelectedCategory(allMovies),
           ),
       ],
@@ -165,8 +213,24 @@ class _ColorChangingButtonsRowState extends State<ColorChangingButtonsRow> {
 
 class PopularWidget extends StatelessWidget with ScreenSizeUtil {
   final List<Data> movies;
+  final String movieImage;
+  final String name;
+  final String descrip;
+  final String time;
+  final String year;
+  final String movieVideo;
+  final String popularity;
 
-  const PopularWidget({super.key, required this.movies});
+  const PopularWidget(
+      {super.key,
+      required this.movies,
+      required this.movieImage,
+      required this.name,
+      required this.descrip,
+      required this.time,
+      required this.year,
+      required this.movieVideo,
+      required this.popularity});
 
   @override
   Widget build(BuildContext context) {
@@ -195,14 +259,22 @@ class PopularWidget extends StatelessWidget with ScreenSizeUtil {
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Text(''),
+                              builder: (context) => MovieDetailPage(
+                                description: descrip,
+                                image: movieImage,
+                                name: name,
+                                year: year,
+                                time: time,
+                                popularity: popularity,
+                                video: movieVideo,
+                              ),
                             ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Image.network(
-                                movie.movieImage!,
+                                movieImage,
                                 height: getHeight(context) * 0.24,
                               ),
                               Padding(
@@ -213,7 +285,7 @@ class PopularWidget extends StatelessWidget with ScreenSizeUtil {
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
-                                  movie.name!,
+                                  name,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
