@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/button_widget.dart';
 import 'package:movie_app/h%20(2).dart';
+import 'package:movie_app/login/log_in.dart';
+import 'package:movie_app/login/login.dart';
 import 'package:movie_app/login/password_toggle_text_field.dart';
+import 'package:movie_app/profile/edit1_profile.dart';
 
 class ProfilePage extends StatelessWidget with ScreenSizeUtil {
   // final TextEditingController nameController;
@@ -14,10 +17,6 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
 
   @override
   Widget build(BuildContext context) {
-    final profNameController = TextEditingController();
-    final profEmailController = TextEditingController();
-    final profPasswordController = TextEditingController();
-
     return Scaffold(
       backgroundColor: const Color(0xff1F1D2B),
       body: Padding(
@@ -30,7 +29,7 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
               ),
               child: Text(
                 textAlign: TextAlign.center,
-                'Profile',
+                'Профиль',
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
@@ -75,12 +74,10 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      // String newName = nameController.text;
-                      // String newEmail = emailController.text;
-                      // String newPassword = passwordController.text;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Profile updated successfully'),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditPage(),
                         ),
                       );
                     },
@@ -96,55 +93,6 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
             const SizedBox(
               height: 16,
             ),
-            TextField(
-              style: const TextStyle(
-                color: Color(0xffEBEBEF),
-              ),
-              controller: profNameController,
-              decoration: InputDecoration(
-                labelText: 'Full name',
-                labelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xffEBEBEF),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: getHeight(context) * 0.0259),
-              child: TextField(
-                style: const TextStyle(
-                  color: Color(0xffEBEBEF),
-                ),
-                controller: profEmailController,
-                decoration: InputDecoration(
-                  labelText: 'Email Adress',
-                  labelStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffEBEBEF),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-              ),
-            ),
-            PasswordToggleTextField(
-              Controller: profPasswordController,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: getHeight(context) * 0.0259),
-              child: ButtonWidget(
-                buttonName: 'Save changes',
-                functionApply: () {},
-              ),
-            ),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(width: 0.1, color: Colors.white),
@@ -157,7 +105,7 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
                   const Padding(
                     padding: EdgeInsets.only(left: 20, top: 10),
                     child: Text(
-                      'More',
+                      'Еще',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -167,7 +115,7 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
                   ListTile(
                     leading: const Icon(Icons.security),
                     title: const Text(
-                      'Legal and policy',
+                      'Политика конфеденциальности',
                       style: TextStyle(color: Colors.white),
                     ),
                     trailing: const Icon(Icons.chevron_right, size: 30),
@@ -211,7 +159,7 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
                   ListTile(
                     leading: const Icon(Icons.info),
                     title: const Text(
-                      'About us',
+                      'О нас',
                       style: TextStyle(color: Colors.white),
                     ),
                     trailing: const Icon(
@@ -243,7 +191,13 @@ class ProfilePage extends StatelessWidget with ScreenSizeUtil {
                   Color(0xfff1f1d2b),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpLogin(),
+                    ));
+              },
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Text(
@@ -305,7 +259,7 @@ class PrivacyPage extends StatelessWidget with ScreenSizeUtil {
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: SingleChildScrollView(
           child: Text(
-            '''Политика конфиденциальности Movies NOW!
+            '''Политика конфиденциальности!
 
 Введение
 
@@ -408,7 +362,7 @@ class AboutUsPage extends StatelessWidget with ScreenSizeUtil {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'About Us',
+          'О нас',
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -442,7 +396,7 @@ class AboutUsPage extends StatelessWidget with ScreenSizeUtil {
         child: Column(
           children: [
             Text(
-              'Contact Information',
+              'Контактные информации',
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             Text(

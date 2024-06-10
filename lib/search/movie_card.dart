@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:movie_app/h%20(2).dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -76,17 +77,20 @@ class MovieCard extends StatelessWidget with ScreenSizeUtil {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: getHeight(context) * 0.01),
-                    child: Text(
-                      overflow: TextOverflow.ellipsis,
-                      name,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                  SizedBox(
+                    width: 188,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: getHeight(context) * 0.01),
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        name,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

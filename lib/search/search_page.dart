@@ -235,56 +235,61 @@ class SearchiBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: const Color(0xff252836),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.search,
-            size: 18,
-            color: Colors.grey,
+    return Scaffold(
+      appBar: AppBar(
+        title: Container(
+          height: 50,
+          width:300 ,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              style: const TextStyle(
-                leadingDistribution: TextLeadingDistribution.even,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: const Color(0xff252836),
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.search,
+                size: 18,
                 color: Colors.grey,
               ),
-              cursorColor: Colors.grey,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                hoverColor: Colors.grey,
-                hintText: 'Search a title',
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey,
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  style: const TextStyle(
+                    leadingDistribution: TextLeadingDistribution.even,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                  cursorColor: Colors.grey,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    hoverColor: Colors.grey,
+                    hintText: 'Поиск фильма...',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              SvgPicture.asset(
+                'assets/icons/palochka.svg',
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              SvgPicture.asset(
+                'assets/icons/options.svg',
+              ),
+            ],
           ),
-          SvgPicture.asset(
-            'assets/icons/palochka.svg',
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          SvgPicture.asset(
-            'assets/icons/options.svg',
-          ),
-        ],
+        ),
       ),
     );
   }
