@@ -17,19 +17,19 @@ class OnBoardingPage3 extends StatelessWidget with ScreenSizeUtil {
               'assets/images/onboarding_3.png',
               fit: BoxFit.fill,
               width: MediaQuery.of(context).size.width,
-              
             ),
           ),
           Expanded(
             child: Padding(
               padding:
-                  EdgeInsets.symmetric(horizontal: getWidth(context) * 0.085).copyWith(top: getHeight(context)*0.056),
+                  EdgeInsets.symmetric(horizontal: getWidth(context) * 0.085)
+                      .copyWith(top: getHeight(context) * 0.056),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Lorem ipsum dolor sit amet consecteur esplicit',
+                    'Приятного просмотра со всей семьей',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -39,9 +39,11 @@ class OnBoardingPage3 extends StatelessWidget with ScreenSizeUtil {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    'Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.',
+                    'Иногда один хороший фильм может создать настроение всей семье. Что посмотреть, чтобы провести уютный вечер дома?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,

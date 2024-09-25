@@ -39,7 +39,7 @@ class OnBoardingPage2 extends StatelessWidget with ScreenSizeUtil {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Lorem ipsum dolor sit amet consecteur esplicit',
+                    'В хорошем кино каждый кадр не случаен',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
@@ -53,7 +53,7 @@ class OnBoardingPage2 extends StatelessWidget with ScreenSizeUtil {
                     height: 10,
                   ),
                   Text(
-                    'Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.',
+                    'Пользователь имеет возможность посещать кинотеатры в своем городе совершенно бесплатно!.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,

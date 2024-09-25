@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/h%20(2).dart';
+import 'package:movie_app/login/log_in.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_1.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_2.dart';
 import 'package:movie_app/onboarding%20V1/onboarding_3.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -18,8 +16,6 @@ class OnBoardingPage extends StatefulWidget {
 
 class _OnBoardingPageState extends State<OnBoardingPage> with ScreenSizeUtil {
   final PageController _pageController = PageController(initialPage: 0);
-
-  int _activePage = 0;
 
   final List _pages = [
     const OnBoardingPage1(),
@@ -32,15 +28,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> with ScreenSizeUtil {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (int page) {
-                setState(() {
-                  _activePage = page;
-                });
+                setState(
+                  () {},
+                );
               },
               itemCount: _pages.length,
               itemBuilder: (context, index) {
@@ -69,8 +65,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> with ScreenSizeUtil {
                   SizedBox(
                     width: getWidth(context) * 0.55,
                   ),
-                  SvgPicture.asset(
-                    'assets/icons/Next.svg',
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpLogin(),
+                        ),
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/Next.svg',
+                    ),
                   ),
                 ],
               ),

@@ -26,6 +26,9 @@ android {
     namespace "com.example.movie_app"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    defaultConfig {
+        minSdkVersion 19
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
